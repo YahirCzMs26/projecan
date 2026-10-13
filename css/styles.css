@@ -1,0 +1,1641 @@
+/* ==========================================================================
+   LA GACETA NOCTURNA - ESTILO EDITORIAL PERIODÍSTICO
+   Paleta: Negro carbón & Verde Pantano (Swamp Green Noir)
+   ========================================================================== */
+
+:root {
+  /* Paleta Base: Negro y Sombras Pantanosas */
+  --bg-deep-abyss: #070c09;
+  --bg-swamp-dark: #0b120e;
+  --bg-column-card: #0f1812;
+  --bg-card-hover: #142119;
+  --bg-card-active: #18281e;
+  --bg-elevated: #152219;
+  --bg-modal: #0d1610;
+
+  /* Verdes Pantano & Musgo */
+  --swamp-primary: #254832;
+  --swamp-glow: #2d5a3e;
+  --swamp-bright: #3c7853;
+  --swamp-vivid: #4fa16f;
+  --swamp-light: #7ec298;
+  --swamp-muted: #1e3325;
+  --moss-accent: #668858;
+  --amber-editorial: #c7a760;
+  --amber-muted: #8a7341;
+
+  /* Tipografías y Textos */
+  --text-main: #e2ede4;
+  --text-secondary: #9cb3a2;
+  --text-muted: #627a69;
+  --text-inverse: #08100a;
+
+  /* Bordes de Imprenta / Filetes de Periódico */
+  --border-rule-thick: 3px solid #233b2b;
+  --border-rule-thin: 1px solid #1a2c20;
+  --border-rule-subtle: 1px solid rgba(60, 120, 83, 0.18);
+  --border-amber: 1px solid rgba(199, 167, 96, 0.35);
+
+  /* Sombras e Iluminación */
+  --shadow-broadsheet: 0 10px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(37, 72, 50, 0.15);
+  --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(126, 194, 152, 0.05);
+  --shadow-modal: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(45, 90, 62, 0.25);
+  
+  /* Fuentes */
+  --font-masthead: 'Cinzel', 'Times New Roman', serif;
+  --font-headlines: 'Playfair Display', Georgia, serif;
+  --font-body: 'Lora', 'Georgia', serif;
+  --font-ui: 'Space Grotesk', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Transiciones y Curvas */
+  --ease-editorial: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --radius-sm: 3px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+}
+
+/* --------------------------------------------------------------------------
+   Reset & Base Settings
+   -------------------------------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg-deep-abyss);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  selection-background-color: var(--swamp-bright);
+  selection-color: #fff;
+}
+
+::selection {
+  background: var(--swamp-bright);
+  color: #ffffff;
+}
+
+/* Niebla y Textura Atmosférica */
+.swamp-mist-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: 
+    radial-gradient(circle at 15% 20%, rgba(37, 72, 50, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(30, 60, 42, 0.22) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(11, 18, 14, 0.8) 0%, rgba(7, 12, 9, 0.98) 100%);
+  z-index: 0;
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  z-index: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Layout Estructura Principal
+   -------------------------------------------------------------------------- */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Barra Lateral Editorial (Sidebar Drawer)
+   -------------------------------------------------------------------------- */
+.editorial-sidebar {
+  width: 290px;
+  background: var(--bg-swamp-dark);
+  border-right: var(--border-rule-thick);
+  border-right-color: #1a2f22;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 50;
+  transition: transform 0.35s var(--ease-editorial);
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.6);
+}
+
+.sidebar-header {
+  padding: 1.5rem 1.25rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #1a2c20;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-crest {
+  font-size: 1.6rem;
+  color: var(--amber-editorial);
+  text-shadow: 0 0 8px rgba(199, 167, 96, 0.3);
+}
+
+.brand-text h2 {
+  font-family: var(--font-masthead);
+  font-size: 1.25rem;
+  letter-spacing: 0.18em;
+  color: var(--text-main);
+  line-height: 1.1;
+  font-weight: 900;
+}
+
+.brand-text small {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  color: var(--swamp-light);
+  letter-spacing: 0.15em;
+  display: block;
+}
+
+.sidebar-close-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.sidebar-edition-meta {
+  padding: 0.9rem 1.25rem;
+  background: rgba(15, 24, 18, 0.7);
+  border-bottom: var(--border-rule-thin);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.sidebar-edition-meta .meta-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+}
+
+.sidebar-edition-meta .label {
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+}
+
+.sidebar-edition-meta .value {
+  color: var(--swamp-light);
+  font-weight: 500;
+}
+
+/* Navegación y Enlaces */
+.editorial-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 0.85rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--swamp-primary) transparent;
+}
+
+.nav-section-title {
+  font-family: var(--font-ui);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: var(--amber-muted);
+  font-weight: 700;
+  padding: 0.4rem 0.6rem 0.5rem;
+  border-bottom: 1px dashed rgba(199, 167, 96, 0.2);
+  margin-bottom: 0.5rem;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-link {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+  background: rgba(37, 72, 50, 0.25);
+  color: var(--text-main);
+  border-color: rgba(60, 120, 83, 0.3);
+  transform: translateX(3px);
+}
+
+.nav-link.active {
+  background: linear-gradient(90deg, rgba(37, 72, 50, 0.65), rgba(20, 35, 25, 0.4));
+  color: #fff;
+  border-left: 3px solid var(--swamp-vivid);
+  border-color: rgba(79, 161, 111, 0.4);
+  font-weight: 600;
+}
+
+.nav-icon {
+  font-size: 1rem;
+}
+
+.nav-text {
+  flex: 1;
+}
+
+.nav-count {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  background: rgba(15, 24, 18, 0.8);
+  padding: 0.15rem 0.45rem;
+  border-radius: 10px;
+  border: 1px solid rgba(60, 120, 83, 0.3);
+  color: var(--swamp-light);
+}
+
+/* Nube de Etiquetas / Motivos en Barra Lateral */
+.tags-cloud-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0.5rem 0.2rem;
+}
+
+.tag-filter-chip {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: var(--radius-sm);
+  background: rgba(20, 32, 24, 0.6);
+  border: 1px solid #1f3525;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tag-filter-chip:hover,
+.tag-filter-chip.active {
+  background: var(--swamp-primary);
+  color: #fff;
+  border-color: var(--swamp-vivid);
+}
+
+/* Pie de Barra Lateral */
+.sidebar-footer {
+  padding: 1rem;
+  border-top: var(--border-rule-thin);
+  background: rgba(11, 18, 14, 0.95);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.btn-sidebar-action {
+  width: 100%;
+  padding: 0.55rem;
+  background: var(--swamp-primary);
+  border: 1px solid var(--swamp-glow);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.btn-sidebar-action:hover {
+  background: var(--swamp-bright);
+  box-shadow: 0 0 10px rgba(60, 120, 83, 0.4);
+}
+
+.btn-sidebar-action.secondary {
+  background: rgba(15, 24, 18, 0.6);
+  border-color: #1f3525;
+  color: var(--text-secondary);
+}
+
+.btn-sidebar-action.secondary:hover {
+  background: rgba(37, 72, 50, 0.3);
+  color: var(--text-main);
+  border-color: var(--swamp-glow);
+}
+
+/* --------------------------------------------------------------------------
+   Área Principal Editorial (Broadsheet Main)
+   -------------------------------------------------------------------------- */
+.editorial-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Cabecera Tipo Periódico Gran Formato */
+.broadsheet-header {
+  background: linear-gradient(180deg, #0d1510 0%, #090e0b 100%);
+  border-bottom: var(--border-rule-thick);
+  border-bottom-color: #233b2b;
+  position: relative;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+}
+
+/* Barra Superior de Avisos y Hora */
+.top-announcement-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1.5rem;
+  background: #070c09;
+  border-bottom: 1px solid #152219;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.announcement-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.btn-toggle-menu {
+  display: none;
+  background: rgba(37, 72, 50, 0.3);
+  border: 1px solid var(--swamp-muted);
+  color: var(--swamp-light);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.btn-toggle-menu .hamburger-bar {
+  display: block;
+  width: 14px;
+  height: 2px;
+  background: var(--swamp-light);
+  margin: 2px 0;
+}
+
+.weather-quote {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+.announcement-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.edition-no {
+  color: var(--amber-muted);
+  letter-spacing: 0.08em;
+}
+
+.live-clock {
+  color: var(--swamp-vivid);
+  font-weight: 600;
+}
+
+/* Gran Cabecera / Masthead */
+.masthead {
+  padding: 2.2rem 1.5rem 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px double #1f3525;
+}
+
+.masthead-center {
+  max-width: 900px;
+}
+
+.masthead-kicker {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  letter-spacing: 0.28em;
+  color: var(--amber-editorial);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.masthead-title {
+  font-family: var(--font-masthead);
+  font-size: clamp(2.2rem, 5.5vw, 4.4rem);
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: #f1f8f3;
+  text-transform: uppercase;
+  text-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 25px rgba(45, 90, 62, 0.35);
+  line-height: 1.05;
+  margin: 0.2rem 0 0.5rem;
+}
+
+.masthead-tagline {
+  font-family: var(--font-headlines);
+  font-style: italic;
+  font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+}
+
+.masthead-flourish {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #254832, transparent);
+  margin: 0 1.5rem;
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .masthead-flourish {
+    display: block;
+  }
+}
+
+/* Cinta de Opciones & Controles (Editorial Ribbon) */
+.editorial-ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  background: #080e0a;
+  border-top: 1px solid #1a2c20;
+}
+
+.ribbon-date-box {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  font-family: var(--font-masthead);
+}
+
+.ribbon-day {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--swamp-light);
+  letter-spacing: 0.1em;
+}
+
+.ribbon-full-date {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.ribbon-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Buscador */
+.search-box {
+  display: flex;
+  align-items: center;
+  background: rgba(15, 24, 18, 0.8);
+  border: 1px solid #1f3525;
+  border-radius: var(--radius-sm);
+  padding: 0.35rem 0.65rem;
+  gap: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.search-box:focus-within {
+  border-color: var(--swamp-vivid);
+  box-shadow: 0 0 8px rgba(79, 161, 111, 0.25);
+  background: #111b14;
+}
+
+.search-icon {
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.search-box input {
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  width: 180px;
+}
+
+.btn-clear-search {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0 0.2rem;
+}
+
+/* Filtros Desplegables */
+.filter-dropdown-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+}
+
+.filter-label {
+  color: var(--text-muted);
+}
+
+.editorial-select {
+  background: #0f1812;
+  border: 1px solid #1f3525;
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.editorial-select:hover,
+.editorial-select:focus {
+  border-color: var(--swamp-bright);
+}
+
+/* Conmutador de Vistas */
+.view-mode-toggle {
+  display: flex;
+  background: #0f1812;
+  border: 1px solid #1f3525;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.btn-view {
+  background: none;
+  border: none;
+  padding: 0.4rem 0.55rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-view.active {
+  background: var(--swamp-primary);
+  color: #fff;
+}
+
+/* Botón Redactar Columna */
+.btn-redact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: linear-gradient(135deg, var(--swamp-primary) 0%, #1a3a25 100%);
+  border: 1px solid var(--swamp-bright);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: all 0.25s var(--ease-editorial);
+}
+
+.btn-redact:hover {
+  background: linear-gradient(135deg, var(--swamp-bright) 0%, var(--swamp-primary) 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(60, 120, 83, 0.4);
+}
+
+.btn-redact.secondary {
+  background: transparent;
+  border: 1px solid #233b2b;
+  color: var(--text-secondary);
+}
+
+.btn-redact.secondary:hover {
+  background: rgba(37, 72, 50, 0.2);
+  color: #fff;
+  border-color: var(--swamp-light);
+}
+
+.redact-icon {
+  font-size: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Banner de Sección Activa
+   -------------------------------------------------------------------------- */
+.section-banner {
+  padding: 1.25rem 2rem;
+  background: linear-gradient(90deg, rgba(15, 24, 18, 0.95), rgba(9, 14, 11, 0.8));
+  border-bottom: 1px solid #1a2c20;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.banner-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--swamp-light);
+  margin-bottom: 0.2rem;
+}
+
+.banner-title {
+  font-family: var(--font-headlines);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.banner-desc {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  max-width: 650px;
+}
+
+.banner-stats {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.stat-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.3rem 0.7rem;
+  background: #090e0b;
+  border: 1px solid #1f3525;
+  border-radius: 20px;
+  color: var(--swamp-light);
+}
+
+/* --------------------------------------------------------------------------
+   Cuerpo de la Gaceta (Broadsheet Grid & Columnas Periodísticas)
+   -------------------------------------------------------------------------- */
+.broadsheet-body {
+  flex: 1;
+  padding: 2rem 2.2rem;
+  position: relative;
+}
+
+/* Disposición en Columnas Periodísticas Masonry / Grid */
+.columns-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 1.8rem;
+  align-items: start;
+}
+
+/* Modo Lista Compacta */
+.columns-grid.list-view {
+  grid-template-columns: 1fr;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* Tarjeta de Columna Periodística */
+.editorial-article-card {
+  background: var(--bg-column-card);
+  border: var(--border-rule-thin);
+  border-radius: var(--radius-sm);
+  padding: 1.6rem 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s var(--ease-editorial);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.editorial-article-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(79, 161, 111, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.7), 0 0 15px rgba(37, 72, 50, 0.2);
+}
+
+/* Borde superior con distinción según sección */
+.editorial-article-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--swamp-primary);
+  transition: background 0.25s ease;
+}
+
+.editorial-article-card:hover::before {
+  background: var(--swamp-vivid);
+}
+
+/* Artículos Fijados (Front Page / Portada) */
+.editorial-article-card.is-pinned {
+  border-color: rgba(199, 167, 96, 0.45);
+  background: linear-gradient(180deg, #132018 0%, #0d1510 100%);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 15px rgba(199, 167, 96, 0.15);
+}
+
+.editorial-article-card.is-pinned::before {
+  background: var(--amber-editorial);
+}
+
+.pinned-badge {
+  position: absolute;
+  top: 0.8rem;
+  right: 0.9rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--amber-editorial);
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  letter-spacing: 0.08em;
+  background: rgba(199, 167, 96, 0.1);
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(199, 167, 96, 0.25);
+}
+
+/* Metadatos Superiores de la Columna */
+.article-header-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px dashed rgba(60, 120, 83, 0.25);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+.article-section-tag {
+  color: var(--swamp-light);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.article-motive-pill {
+  background: rgba(37, 72, 50, 0.45);
+  border: 1px solid var(--swamp-primary);
+  color: #fff;
+  padding: 0.15rem 0.55rem;
+  border-radius: 12px;
+  font-size: 0.68rem;
+}
+
+.article-date {
+  color: var(--text-muted);
+}
+
+/* Titulares Periodísticos */
+.article-headline {
+  font-family: var(--font-headlines);
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #f5f9f6;
+  margin-bottom: 0.45rem;
+  transition: color 0.2s ease;
+}
+
+.editorial-article-card:hover .article-headline {
+  color: #ffffff;
+}
+
+/* Subtítulo o Bajada */
+.article-epigraph {
+  font-family: var(--font-headlines);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #1a2c20;
+}
+
+/* Cuerpo de Texto Periodístico con Capitular (Drop Cap) */
+.article-body-text {
+  font-family: var(--font-body);
+  font-size: 0.96rem;
+  line-height: 1.7;
+  color: #d6e3d9;
+  margin-bottom: 1.2rem;
+  flex: 1;
+  text-align: justify;
+  hyphens: auto;
+}
+
+.article-body-text p {
+  margin-bottom: 0.85rem;
+}
+
+/* Capitular de primer párrafo */
+.editorial-article-card.type-editorial .article-body-text p:first-of-type::first-letter {
+  font-family: var(--font-masthead);
+  float: left;
+  font-size: 3.4rem;
+  line-height: 0.8;
+  padding-top: 4px;
+  padding-right: 8px;
+  padding-bottom: 2px;
+  color: var(--swamp-light);
+  font-weight: 900;
+  text-shadow: 0 0 10px rgba(60, 120, 83, 0.4);
+}
+
+/* Citas destacadas (Pull quotes) dentro de artículos */
+.article-body-text blockquote {
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background: rgba(15, 26, 19, 0.6);
+  border-left: 3px solid var(--amber-editorial);
+  font-style: italic;
+  color: var(--amber-editorial);
+  font-family: var(--font-headlines);
+  font-size: 1.05rem;
+}
+
+/* Lista de Tareas Interactiva dentro de la Columna */
+.article-tasks-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0.8rem 0 1.2rem;
+  flex: 1;
+}
+
+.task-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.45rem 0.6rem;
+  background: rgba(11, 18, 14, 0.6);
+  border: 1px solid #1b2e21;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.task-item:hover {
+  background: rgba(20, 34, 25, 0.6);
+  border-color: rgba(60, 120, 83, 0.4);
+}
+
+.task-item.is-done {
+  background: rgba(9, 14, 11, 0.4);
+  border-color: #142419;
+  opacity: 0.65;
+}
+
+/* Checkbox estilizado en verde pantano */
+.task-checkbox-custom {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid var(--swamp-bright);
+  background: #090e0b;
+  border-radius: 2px;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  margin-top: 3px;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.task-checkbox-custom:checked {
+  background: var(--swamp-vivid);
+  border-color: var(--swamp-vivid);
+  box-shadow: 0 0 6px rgba(79, 161, 111, 0.5);
+}
+
+.task-checkbox-custom:checked::after {
+  content: "✔";
+  color: #070c09;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.task-label {
+  font-family: var(--font-ui);
+  font-size: 0.88rem;
+  color: var(--text-main);
+  line-height: 1.4;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.2s ease;
+}
+
+.task-item.is-done .task-label {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Pie de Tarjeta / Acciones de la Columna */
+.article-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.8rem;
+  margin-top: auto;
+  border-top: 1px solid #16261b;
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+}
+
+.article-byline {
+  color: var(--text-muted);
+  font-style: italic;
+  font-family: var(--font-body);
+}
+
+.article-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.btn-card-action {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  padding: 0.25rem 0.45rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-card-action:hover {
+  background: rgba(37, 72, 50, 0.35);
+  border-color: rgba(60, 120, 83, 0.3);
+  color: var(--swamp-light);
+}
+
+.btn-card-action.delete:hover {
+  background: rgba(120, 30, 30, 0.25);
+  border-color: rgba(180, 50, 50, 0.4);
+  color: #ff8b8b;
+}
+
+/* --------------------------------------------------------------------------
+   Estado Vacío (Empty State)
+   -------------------------------------------------------------------------- */
+.empty-state {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: rgba(15, 24, 18, 0.5);
+  border: 2px dashed #1f3525;
+  border-radius: var(--radius-md);
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.empty-state h3 {
+  font-family: var(--font-headlines);
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Pie de Periódico (Broadsheet Footer)
+   -------------------------------------------------------------------------- */
+.broadsheet-footer {
+  margin-top: 4rem;
+  background: #080d09;
+  border-top: var(--border-rule-thick);
+  border-top-color: #1f3525;
+  padding: 2.5rem 2.2rem 1.5rem;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-col h4 {
+  font-family: var(--font-masthead);
+  font-size: 0.88rem;
+  letter-spacing: 0.12em;
+  color: var(--amber-editorial);
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #1a2c20;
+  padding-bottom: 0.35rem;
+}
+
+.footer-col p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.footer-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.footer-link-btn {
+  background: none;
+  border: 1px solid #1a2c20;
+  color: var(--text-secondary);
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.footer-link-btn:hover {
+  background: rgba(37, 72, 50, 0.3);
+  color: var(--text-main);
+  border-color: var(--swamp-bright);
+}
+
+.footer-bottom-bar {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  padding-top: 1.5rem;
+  border-top: 1px solid #142419;
+}
+
+/* --------------------------------------------------------------------------
+   Modal de Redacción Editorial
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 5, 0.88);
+  backdrop-filter: blur(6px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+.modal-overlay.is-open {
+  display: flex;
+  animation: modalFadeIn 0.25s var(--ease-editorial);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.modal-editorial-card {
+  background: var(--bg-modal);
+  border: 1.5px solid var(--swamp-glow);
+  box-shadow: var(--shadow-modal);
+  width: 100%;
+  max-width: 720px;
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 1.25rem 1.6rem;
+  background: linear-gradient(90deg, #101c13 0%, #0c1610 100%);
+  border-bottom: 1px solid #1f3525;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--amber-editorial);
+  display: block;
+}
+
+.modal-header h2 {
+  font-family: var(--font-headlines);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.btn-close-modal {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  transition: color 0.2s;
+}
+
+.btn-close-modal:hover {
+  color: #fff;
+}
+
+/* Formulario */
+.modal-form {
+  padding: 1.5rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.form-row.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-group label {
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-group label .required {
+  color: #ff7575;
+}
+
+.editorial-input,
+.editorial-textarea {
+  background: #09100c;
+  border: 1px solid #1c3022;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.headline-field {
+  font-family: var(--font-headlines);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.editorial-input:focus,
+.editorial-textarea:focus {
+  border-color: var(--swamp-vivid);
+  box-shadow: 0 0 10px rgba(79, 161, 111, 0.25);
+  background: #0b140f;
+}
+
+/* Conmutador de Tipo de Contenido */
+.content-type-toggle {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0.65rem 0.9rem;
+  background: rgba(15, 24, 18, 0.7);
+  border: 1px dashed #1f3525;
+  border-radius: var(--radius-sm);
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.radio-label input[type="radio"] {
+  accent-color: var(--swamp-vivid);
+}
+
+/* Barra de Herramientas de Formato */
+.editor-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.35rem 0.5rem;
+  background: #0a110d;
+  border: 1px solid #1a2c20;
+  border-bottom: none;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.editor-tip {
+  font-size: 0.72rem;
+  font-family: var(--font-ui);
+  color: var(--text-muted);
+}
+
+.formatting-helpers {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.btn-format {
+  background: rgba(20, 32, 24, 0.8);
+  border: 1px solid #1f3525;
+  color: var(--text-secondary);
+  padding: 0.2rem 0.45rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.btn-format:hover {
+  background: var(--swamp-primary);
+  color: #fff;
+}
+
+/* Constructor de Tareas */
+.tasks-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  background: #09100c;
+  border: 1px solid #1c3022;
+  border-radius: var(--radius-sm);
+}
+
+.task-builder-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.task-builder-input {
+  flex: 1;
+  background: #0d1611;
+  border: 1px solid #1e3325;
+  color: var(--text-main);
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+}
+
+.btn-remove-task-row {
+  background: none;
+  border: none;
+  color: #ff8b8b;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 0.4rem;
+}
+
+.btn-add-task-row {
+  background: rgba(37, 72, 50, 0.25);
+  border: 1px dashed var(--swamp-bright);
+  color: var(--swamp-light);
+  font-family: var(--font-ui);
+  font-size: 0.78rem;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-add-task-row:hover {
+  background: rgba(37, 72, 50, 0.45);
+  color: #fff;
+}
+
+/* Checkbox Destacar */
+.inline-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  color: var(--amber-editorial);
+  cursor: pointer;
+}
+
+.inline-checkbox input[type="checkbox"] {
+  accent-color: var(--amber-editorial);
+}
+
+/* Pie de Modal */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #1a2c20;
+}
+
+.btn-cancel {
+  background: none;
+  border: 1px solid #1f3525;
+  color: var(--text-secondary);
+  font-family: var(--font-ui);
+  font-size: 0.82rem;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background: rgba(20, 32, 24, 0.8);
+  color: #fff;
+}
+
+.btn-save {
+  background: linear-gradient(135deg, var(--swamp-bright) 0%, var(--swamp-primary) 100%);
+  border: 1px solid var(--swamp-light);
+  color: #fff;
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1.4rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(45, 90, 62, 0.4);
+  transition: all 0.2s;
+}
+
+.btn-save:hover {
+  background: linear-gradient(135deg, var(--swamp-vivid) 0%, var(--swamp-bright) 100%);
+  box-shadow: 0 4px 18px rgba(79, 161, 111, 0.5);
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   Botón Flotante (FAB)
+   -------------------------------------------------------------------------- */
+.fab-redact {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--swamp-bright) 0%, #173822 100%);
+  border: 2px solid var(--swamp-light);
+  color: #fff;
+  font-size: 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 16px rgba(60, 120, 83, 0.4);
+  z-index: 40;
+  transition: all 0.3s var(--ease-editorial);
+}
+
+.fab-redact:hover {
+  transform: scale(1.1) rotate(6deg);
+  background: var(--swamp-vivid);
+  box-shadow: 0 8px 25px rgba(79, 161, 111, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   Notificaciones Toast
+   -------------------------------------------------------------------------- */
+.toast-notification {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: #111e15;
+  border: 1px solid var(--swamp-vivid);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-ui);
+  font-size: 0.85rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+  z-index: 150;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s var(--ease-editorial);
+}
+
+.toast-notification.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive & Mobile Breakpoints
+   -------------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .editorial-sidebar {
+    position: fixed;
+    transform: translateX(-100%);
+  }
+
+  .editorial-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-close-btn {
+    display: block;
+  }
+
+  .btn-toggle-menu {
+    display: flex;
+  }
+
+  .sidebar-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    z-index: 45;
+  }
+
+  .sidebar-backdrop.is-open {
+    display: block;
+  }
+
+  .broadsheet-body {
+    padding: 1.25rem;
+  }
+
+  .form-row.two-cols {
+    grid-template-columns: 1fr;
+  }
+
+  .masthead {
+    padding: 1.5rem 1rem;
+  }
+
+  .editorial-ribbon {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ribbon-controls {
+    justify-content: stretch;
+  }
+
+  .search-box {
+    flex: 1;
+  }
+
+  .search-box input {
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Modo Impresión (Periódico Físico Elegante)
+   -------------------------------------------------------------------------- */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+  }
+
+  .swamp-mist-overlay,
+  .noise-overlay,
+  .editorial-sidebar,
+  .sidebar-backdrop,
+  .fab-redact,
+  .ribbon-controls,
+  .btn-toggle-menu,
+  .toast-notification {
+    display: none !important;
+  }
+
+  .editorial-main {
+    width: 100% !important;
+  }
+
+  .broadsheet-header {
+    background: none !important;
+    border-bottom: 3px double #000 !important;
+    color: #000 !important;
+  }
+
+  .masthead-title {
+    color: #000 !important;
+    text-shadow: none !important;
+  }
+
+  .editorial-article-card {
+    background: none !important;
+    border: 1px solid #ccc !important;
+    color: #000 !important;
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+
+  .article-headline {
+    color: #000 !important;
+  }
+
+  .article-body-text {
+    color: #222 !important;
+  }
+}
